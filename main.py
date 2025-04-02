@@ -73,18 +73,50 @@ def get_latest_news():
             # Summarize the article text
             if content:
                 logger.info(f"Summarizing article: {headline[:50]}...")
-                summary, rewritten_headline = summarize_article(headline, content)
-                
-                # Analyze sentiment
-                sentiment = analyze_sentiment(content)
-                
-                processed_articles.append({
-                    'headline': headline,
-                    'rewritten_headline': rewritten_headline,
-                    'summary': summary,
-                    'url': url,
-                    'sentiment': sentiment
-                })
+                try:
+                    summary, rewritten_headline = summarize_article(headline, content)
+                    
+                    # Check if summary contains an error message (from OpenAI API failure)
+                    if "Error generating summary" in summary:
+                        # Provide a short excerpt of the article as a fallback
+                        logger.warning("Using raw content excerpt due to summarization error")
+                        fallback_summary = content[:300] + "..." if len(content) > 300 else content
+                        sentiment = {"rating": 3, "confidence": 0, "explanation": "Sentiment analysis unavailable"}
+                        
+                        processed_articles.append({
+                            'headline': headline,
+                            'rewritten_headline': headline,  # Use original headline
+                            'summary': fallback_summary,
+                            'url': url,
+                            'sentiment': sentiment,
+                            'is_raw_content': True
+                        })
+                    else:
+                        # Analyze sentiment
+                        sentiment = analyze_sentiment(content)
+                        
+                        processed_articles.append({
+                            'headline': headline,
+                            'rewritten_headline': rewritten_headline,
+                            'summary': summary,
+                            'url': url,
+                            'sentiment': sentiment,
+                            'is_raw_content': False
+                        })
+                except Exception as e:
+                    logger.error(f"Error processing article: {str(e)}")
+                    # Provide a short excerpt of the article as a fallback
+                    fallback_summary = content[:300] + "..." if len(content) > 300 else content
+                    sentiment = {"rating": 3, "confidence": 0, "explanation": "Sentiment analysis unavailable"}
+                    
+                    processed_articles.append({
+                        'headline': headline,
+                        'rewritten_headline': headline,  # Use original headline
+                        'summary': fallback_summary,
+                        'url': url,
+                        'sentiment': sentiment,
+                        'is_raw_content': True
+                    })
         
         # Format the output as markdown text
         result = format_output(college_name, processed_articles)
@@ -207,58 +239,4 @@ def get_openapi_spec():
                             "content": {
                                 "application/json": {
                                     "schema": {
-                                        "type": "object",
-                                        "properties": {
-                                            "error": {
-                                                "type": "string"
-                                            },
-                                            "message": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "500": {
-                            "description": "Server Error",
-                            "content": {
-                                "application/json": {
-                                    "schema": {
-                                        "type": "object",
-                                        "properties": {
-                                            "error": {
-                                                "type": "string"
-                                            },
-                                            "message": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    return jsonify(spec)
-
-
-@app.route('/static/<path:path>')
-def serve_static(path):
-    """
-    Serve static files
-    """
-    return send_from_directory('static', path)
-
-
-if __name__ == "__main__":
-    # Ensure required environment variables are set
-    if not os.environ.get("OPENAI_API_KEY"):
-        logger.warning("OPENAI_API_KEY environment variable not set!")
-    
-    # Run the Flask app
-    app.run(host="0.0.0.0", port=5000, debug=True)
+                             
