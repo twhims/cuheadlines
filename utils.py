@@ -62,10 +62,11 @@ def format_output(college_name: str, articles: List[Dict[str, Any]]) -> str:
         headline = article.get('rewritten_headline', article.get('headline', 'Untitled Article'))
         summary = article.get('summary', 'No summary available.')
         url = article.get('url', '#')
+        is_raw_content = article.get('is_raw_content', False)
         
         # Add sentiment if available
         sentiment_info = ""
-        if 'sentiment' in article:
+        if 'sentiment' in article and not is_raw_content:
             sentiment = article['sentiment']
             rating = sentiment.get('rating', 0)
             stars = "★" * rating + "☆" * (5 - rating)
@@ -75,6 +76,11 @@ def format_output(college_name: str, articles: List[Dict[str, Any]]) -> str:
         
         # Format each article
         output.append(f"## {i}. {headline}")
+        
+        # Add a notice if this is raw content (no AI summary)
+        if is_raw_content:
+            output.append("*Article excerpt (AI summary unavailable):*")
+            
         output.append(f"{summary}{sentiment_info}")
         output.append(f"[Read full article]({url})\n")
     
