@@ -3,7 +3,7 @@ name: clemson-gpt-news
 description: Get the latest Clemson University college news and summaries
 api:
   type: openapi
-  url: https://clemson-gpt-news.onrender.com/openapi.json
+  url: https://cuheadlines.onrender.com/openapi.json
   has_user_authentication: false
 auth:
   type: none
