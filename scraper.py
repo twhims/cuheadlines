@@ -175,16 +175,18 @@ def scrape_article_text(article_url: str) -> Optional[str]:
         The article text content or None if failed
     """
     try:
-        headers = {"User-Agent": get_random_user_agent()}
+        # Set a user agent for the session
+        user_agent = get_random_user_agent()
         
-        # Use trafilatura for extraction
-        downloaded = trafilatura.fetch_url(article_url, headers=headers)
+        # Use trafilatura for extraction - note it doesn't accept headers directly
+        downloaded = trafilatura.fetch_url(article_url)
         if downloaded:
             text = trafilatura.extract(downloaded, include_comments=False, include_tables=False)
             if text:
                 return text
         
         # Fallback to BeautifulSoup if trafilatura fails
+        headers = {"User-Agent": user_agent}
         response = requests.get(article_url, headers=headers, timeout=10)
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
