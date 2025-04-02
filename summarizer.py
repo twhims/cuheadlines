@@ -2,20 +2,7 @@ import logging
 import os
 from typing import Dict, Optional, Tuple, Any
 
-from openai import OpenAI
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-# Initialize OpenAI client with API key from environment
-import os
-from openai import OpenAI
-
-# Initialize OpenAI client with API key from environment
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY")
-)
+from openai_config import client
 
 
 def summarize_article(headline: str, content: str) -> Tuple[str, str]:
