@@ -6,17 +6,17 @@ from typing import Dict, List, Any
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# College URL mapping
+# College URL mapping - Direct newsroom URLs
 COLLEGE_URLS = {
-    "College of Agriculture, Forestry and Life Sciences": "https://www.clemson.edu/cafls",
-    "College of Architecture, Art and Construction": "https://www.clemson.edu/caah",
-    "College of Arts and Humanities": "https://www.clemson.edu/caah",
-    "College of Behavioral, Social and Health Sciences": "https://www.clemson.edu/cbshs",
-    "College of Education": "https://www.clemson.edu/education",
-    "College of Engineering, Computing and Applied Sciences": "https://www.clemson.edu/cecas",
-    "College of Science": "https://www.clemson.edu/science",
-    "Harvey S. Peeler Jr. College of Veterinary Medicine": "https://www.clemson.edu/cafls/veterinary-medicine",
-    "Wilbur O. and Ann Powers College of Business": "https://www.clemson.edu/business"
+    "College of Agriculture, Forestry and Life Sciences": "https://news.clemson.edu/section/college-of-agriculture-forestry-and-life-sciences/",
+    "College of Architecture, Art and Construction": "https://news.clemson.edu/section/college-of-architecture-art-and-construction/",
+    "College of Arts and Humanities": "https://news.clemson.edu/section/college-of-arts-and-humanities/",
+    "College of Behavioral, Social and Health Sciences": "https://news.clemson.edu/section/college-of-behavioral-social-and-health-sciences/",
+    "College of Education": "https://news.clemson.edu/section/college-of-education/",
+    "College of Engineering, Computing and Applied Sciences": "https://news.clemson.edu/section/college-of-engineering-computing-and-applied-sciences/",
+    "College of Science": "https://news.clemson.edu/section/college-of-science/",
+    "Harvey S. Peeler Jr. College of Veterinary Medicine": "https://news.clemson.edu/section/college-of-veterinary-medicine/",
+    "Wilbur O. and Ann Powers College of Business": "https://news.clemson.edu/section/wilbur-o-and-ann-powers-college-of-business/"
 }
 
 
@@ -34,16 +34,9 @@ def get_college_url(college_name: str) -> str:
         ValueError: If the college name is not found
     """
     if college_name in COLLEGE_URLS:
-        base_url = COLLEGE_URLS[college_name]
-        # Try to append a typical news path
-        for path in ["/news.html", "/news", "/media/news"]:
-            potential_url = f"{base_url}{path}"
-            logger.info(f"Returning URL: {potential_url}")
-            return potential_url
-        
-        # If no news path is found, return the base URL
-        logger.info(f"No specific news path found, returning base URL: {base_url}")
-        return base_url
+        news_url = COLLEGE_URLS[college_name]
+        logger.info(f"Returning direct newsroom URL: {news_url}")
+        return news_url
     
     raise ValueError(f"College name not found: {college_name}")
 
