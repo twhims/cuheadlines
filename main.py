@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from scraper import scrape_latest_articles
 from summarizer import summarize_article, analyze_sentiment
 from utils import get_college_url, format_output, get_host_url
+from utils_archive import get_fallback_message
 
 # Load environment variables from .env file
 load_dotenv()
@@ -46,6 +47,16 @@ def get_latest_news():
         }), 400
     
     try:
+        # Currently, many Clemson college news websites are blocking automated access
+        # Use fallback messages for all colleges until we find a better solution
+        logger.warning(f"Using fallback message for {college_name} due to anti-scraping measures")
+        return jsonify({
+            "college": college_name,
+            "result": get_fallback_message(college_name)
+        })
+        
+        # The code below is temporarily disabled due to anti-scraping measures
+        """
         # Validate and get the college URL
         college_url = get_college_url(college_name)
         
@@ -61,6 +72,7 @@ def get_latest_news():
                 "college": college_name,
                 "result": f"No recent news articles found for {college_name}."
             })
+        """
         
         # Process each article - summarize and analyze sentiment
         processed_articles = []
@@ -239,4 +251,58 @@ def get_openapi_spec():
                             "content": {
                                 "application/json": {
                                     "schema": {
-                             
+                                        "type": "object",
+                                        "properties": {
+                                            "error": {
+                                                "type": "string"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "500": {
+                            "description": "Server Error",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "properties": {
+                                            "error": {
+                                                "type": "string"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return jsonify(spec)
+
+
+@app.route('/static/<path:path>')
+def serve_static(path):
+    """
+    Serve static files
+    """
+    return send_from_directory('static', path)
+
+
+if __name__ == "__main__":
+    # Ensure required environment variables are set
+    if not os.environ.get("OPENAI_API_KEY"):
+        logger.warning("OPENAI_API_KEY environment variable not set!")
+    
+    # Run the Flask app
+    app.run(host="0.0.0.0", port=5000, debug=True)
