@@ -49,10 +49,10 @@ def get_latest_news():
         # Validate and get the college URL
         college_url = get_college_url(college_name)
         
-        # Scrape the latest articles (max 5 for performance)
+        # Scrape the latest articles (max 10 for latest news)
         start_time = time.time()
         logger.info(f"Scraping articles from {college_url} for {college_name}")
-        articles = scrape_latest_articles(college_url, max_articles=5)
+        articles = scrape_latest_articles(college_url, max_articles=10)
         logger.info(f"Found {len(articles)} articles in {time.time() - start_time:.2f} seconds")
         
         if not articles:
