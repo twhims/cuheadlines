@@ -145,7 +145,7 @@ def get_openapi_spec():
     host = get_host_url()
     
     spec = {
-        "openapi": "3.0.1",
+        "openapi": "3.1.0",
         "info": {
             "title": "Clemson GPT News API",
             "description": "API for retrieving and summarizing news from Clemson University colleges",
