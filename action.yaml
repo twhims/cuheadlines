@@ -1,0 +1,38 @@
+# OpenAI Action Definition (YAML)
+name: clemson-gpt-news
+description: Get the latest Clemson University college news and summaries
+api:
+  type: openapi
+  url: https://clemson-gpt-news.onrender.com/openapi.json
+  has_user_authentication: false
+auth:
+  type: none
+logo_url: https://clemson-gpt-news.onrender.com/static/logo.svg
+contact_email: support@example.com
+legal_info_url: https://example.com/legal
+
+# Actions
+actions:
+  getLatestNews:
+    description: Get the latest news and summaries from Clemson University colleges
+    input_schema:
+      type: object
+      properties:
+        college:
+          type: string
+          description: The name of the Clemson University college to get news for
+          enum:
+            - "College of Agriculture, Forestry and Life Sciences"
+            - "College of Architecture, Art and Construction"
+            - "College of Arts and Humanities"
+            - "College of Behavioral, Social and Health Sciences"
+            - "College of Education"
+            - "College of Engineering, Computing and Applied Sciences"
+            - "College of Science"
+            - "Harvey S. Peeler Jr. College of Veterinary Medicine"
+            - "Wilbur O. and Ann Powers College of Business"
+      required:
+        - college
+    execution_strategy:
+      type: api
+      operation_id: get_latest_news

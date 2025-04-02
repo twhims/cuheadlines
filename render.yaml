@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: clemson-gpt-news
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --reuse-port main:app
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: HOST
+        value: https://clemson-gpt-news.onrender.com

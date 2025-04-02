@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clemson GPT News API</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-4">
+                    <img src="/static/logo.svg" alt="Clemson Paw Logo" class="logo me-3" width="64" height="64">
+                    <h1 class="display-4 text-clemson">Clemson GPT News</h1>
+                </div>
+                
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-3">About this API</h2>
+                        <p class="card-text">
+                            This API scrapes the latest news from Clemson University college websites and uses AI to summarize
+                            the articles. It's designed to be used as an OpenAI Action/Plugin, allowing ChatGPT to retrieve
+                            the latest Clemson college news.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-3">API Usage</h2>
+                        <p>The API provides a single endpoint for retrieving the latest news:</p>
+                        
+                        <div class="card bg-dark mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span class="badge bg-success me-2">GET</span>
+                                <code class="flex-grow-1">{{ host_url }}/latest-news?college=College%20of%20Science</code>
+                                <button class="btn btn-sm btn-outline-secondary copy-btn" data-clipboard-text="{{ host_url }}/latest-news?college=College%20of%20Science">
+                                    Copy
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Required query parameter:</strong></p>
+                                <ul>
+                                    <li><code>college</code>: The name of the Clemson University college</li>
+                                </ul>
+                                
+                                <p><strong>Available colleges:</strong></p>
+                                <ul class="list-group list-group-flush rounded overflow-hidden">
+                                    <li class="list-group-item bg-dark text-light">College of Agriculture, Forestry and Life Sciences</li>
+                                    <li class="list-group-item bg-dark text-light">College of Architecture, Art and Construction</li>
+                                    <li class="list-group-item bg-dark text-light">College of Arts and Humanities</li>
+                                    <li class="list-group-item bg-dark text-light">College of Behavioral, Social and Health Sciences</li>
+                                    <li class="list-group-item bg-dark text-light">College of Education</li>
+                                    <li class="list-group-item bg-dark text-light">College of Engineering, Computing and Applied Sciences</li>
+                                    <li class="list-group-item bg-dark text-light">College of Science</li>
+                                    <li class="list-group-item bg-dark text-light">Harvey S. Peeler Jr. College of Veterinary Medicine</li>
+                                    <li class="list-group-item bg-dark text-light">Wilbur O. and Ann Powers College of Business</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-3">OpenAI Action/Plugin Integration</h2>
+                        <p>
+                            To use this API as an OpenAI Action, you need to provide the following URL to the 
+                            action configuration:
+                        </p>
+                        
+                        <div class="card bg-dark mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary me-2">OpenAPI Spec</span>
+                                <code class="flex-grow-1">{{ host_url }}/openapi.json</code>
+                                <button class="btn btn-sm btn-outline-secondary copy-btn" data-clipboard-text="{{ host_url }}/openapi.json">
+                                    Copy
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <p>You can also use the pre-configured Action YAML file:</p>
+                                <a href="/action.yaml" class="btn btn-outline-clemson">Download action.yaml</a>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <h5 class="alert-heading">
+                                <i class="bi bi-info-circle me-2"></i>Authentication
+                            </h5>
+                            <p class="mb-0">
+                                This API does not require authentication to access, making it easy to integrate with OpenAI.
+                                However, to generate summaries, it requires an OpenAI API key on the server-side.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-3">Running Locally</h2>
+                        <p>If you want to run this API locally:</p>
+                        
+                        <div class="card bg-dark mb-4">
+                            <div class="card-header">
+                                <span class="badge bg-secondary me-2">Installation</span>
+                            </div>
+                            <div class="card-body">
+                                <ol>
+                                    <li>Clone the repository: <code>git clone https://github.com/yourusername/clemson-gpt-news.git</code></li>
+                                    <li>Navigate to the directory: <code>cd clemson-gpt-news</code></li>
+                                    <li>Create a virtual environment: <code>python -m venv venv</code></li>
+                                    <li>Activate the virtual environment:</li>
+                                    <ul>
+                                        <li>Windows: <code>venv\Scripts\activate</code></li>
+                                        <li>Mac/Linux: <code>source venv/bin/activate</code></li>
+                                    </ul>
+                                    <li>Install dependencies: <code>pip install -r requirements.txt</code></li>
+                                    <li>Create a <code>.env</code> file with your OpenAI API key: <code>OPENAI_API_KEY=your_key_here</code></li>
+                                    <li>Run the API: <code>python main.py</code></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-3">Deployment on Render.com</h2>
+                        <p>
+                            This API can be easily deployed to Render.com using the included <code>render.yaml</code> file.
+                            Simply push your code to GitHub and connect your repository to Render for automatic deployment.
+                        </p>
+                        <a href="https://render.com/docs/deploy-from-repo" class="btn btn-outline-clemson" target="_blank">
+                            Learn more about Render deployments
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center my-5 text-muted">
+            <p>
+                Clemson GPT News API &copy; 2025 | 
+                <a href="https://github.com/yourusername/clemson-gpt-news" class="link-secondary">GitHub</a> |
+                <a href="https://www.clemson.edu/" class="link-secondary">Clemson University</a>
+            </p>
+        </footer>
+    </div>
+    
+    <!-- Simple script to handle copy buttons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const text = button.getAttribute('data-clipboard-text');
+                    navigator.clipboard.writeText(text).then(() => {
+                        const originalText = button.textContent;
+                        button.textContent = 'Copied!';
+                        button.classList.add('btn-success');
+                        button.classList.remove('btn-outline-secondary');
+                        
+                        setTimeout(() => {
+                            button.textContent = originalText;
+                            button.classList.remove('btn-success');
+                            button.classList.add('btn-outline-secondary');
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
