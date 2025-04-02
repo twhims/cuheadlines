@@ -9,7 +9,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize OpenAI client with API key from environment
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+import os
+from openai import OpenAI
+
+# Initialize OpenAI client with API key from environment
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY")
+)
 
 
 def summarize_article(headline: str, content: str) -> Tuple[str, str]:
