@@ -1,38 +1,38 @@
-# OpenAI Action Definition (YAML)
-name: clemson-gpt-news
-description: Get the latest Clemson University college news and summaries
-api:
-  type: openapi
-  url: https://cuheadlines.onrender.com/openapi.json
-  has_user_authentication: false
-auth:
-  type: none
-logo_url: https://cuheadlines.onrender.com/static/logo.svg
-contact_email: support@example.com
-legal_info_url: https://example.com/legal
-
-# Actions
-actions:
-  getLatestNews:
-    description: Get the latest news and summaries from Clemson University colleges
-    input_schema:
-      type: object
-      properties:
-        college:
-          type: string
-          description: The name of the Clemson University college to get news for
-          enum:
-            - "College of Agriculture, Forestry and Life Sciences"
-            - "College of Architecture, Art and Construction"
-            - "College of Arts and Humanities"
-            - "College of Behavioral, Social and Health Sciences"
-            - "College of Education"
-            - "College of Engineering, Computing and Applied Sciences"
-            - "College of Science"
-            - "Harvey S. Peeler Jr. College of Veterinary Medicine"
-            - "Wilbur O. and Ann Powers College of Business"
-      required:
-        - college
-    execution_strategy:
-      type: api
-      operation_id: get_latest_news
+openapi: 3.1.0
+info:
+  title: Clemson GPT News API
+  description: Retrieve summarized news articles from Clemson University college websites.
+  version: 1.0.0
+  x-logo:
+    url: https://cuheadlines.onrender.com/static/logo.svg
+    altText: Clemson Tiger Paw
+  x-openapi-spec: https://cuheadlines.onrender.com/openapi.json
+servers:
+  - url: https://cuheadlines.onrender.com
+    description: Production server
+paths:
+  /latest-news:
+    get:
+      operationId: getLatestNews
+      summary: Get summarized news from Clemson University colleges
+      description: Retrieve and summarize the latest news articles from a specific Clemson University college website.
+      parameters:
+        - name: college
+          in: query
+          description: The name of the Clemson college to get news from (e.g., "College of Science", "College of Engineering")
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response containing summarized news articles
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: Bad request, such as missing or invalid college name
+        "500":
+          description: Server error or failure to retrieve articles
+components:
+  schemas: {}
