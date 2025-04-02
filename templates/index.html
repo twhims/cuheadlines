@@ -92,7 +92,18 @@
                             </h5>
                             <p class="mb-0">
                                 This API does not require authentication to access, making it easy to integrate with OpenAI.
-                                However, to generate summaries, it requires an OpenAI API key on the server-side.
+                                However, to generate AI summaries, it requires an OpenAI API key on the server-side.
+                            </p>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <h5 class="alert-heading">
+                                <i class="bi bi-exclamation-triangle me-2"></i>API Key Status
+                            </h5>
+                            <p class="mb-0">
+                                When no valid OpenAI API key is provided, the service will still function but will display
+                                raw article excerpts instead of AI-generated summaries. To enable full functionality, set the
+                                OPENAI_API_KEY environment variable with a valid key.
                             </p>
                         </div>
                     </div>
